@@ -13,6 +13,9 @@ public:
 private:
   std::string _path;
   cv::Mat _image;
+  cv::Mat _processedImage;
+  float t;
+  int d;
 };
 
 #endif //IMAGEBINARIZATION_BINARIZER_H
