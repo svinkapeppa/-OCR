@@ -1,11 +1,15 @@
 #include "Binarizer.h"
 
+CBinarizer::CBinarizer(float t, int d) {
+  std::cout << t << " " << d << std::endl;
+  _t = t;
+  _d = d;
+}
+
 void CBinarizer::ReadImage(std::string path) {
   _path = path;
   _image = cv::imread(path, CV_LOAD_IMAGE_GRAYSCALE);
   _processedImage = _image;
-  t = 0.15;
-  d = 8;
 }
 
 void CBinarizer::ProcessImage() {
@@ -25,7 +29,7 @@ void CBinarizer::ProcessImage() {
 
   for (auto i = 0; i < _image.cols; ++i) {
     for (auto j = 0; j < _image.rows; ++j) {
-      int frame = std::min(_image.cols, _image.rows) / (2 * d);
+      int frame = std::min(_image.cols, _image.rows) / (2 * _d);
 
       int left = i - frame;
       int right = i + frame;
@@ -49,7 +53,7 @@ void CBinarizer::ProcessImage() {
                 - integralImage[bottom][left] + integralImage[top][left];
       cv::Scalar brightness = _image.at<uchar>(j, i);
 
-      if (square * brightness.val[0] < sum * (1. - t)) {
+      if (square * brightness.val[0] < sum * (1. - _t)) {
         _processedImage.at<uchar>(j, i) = 0;
       } else {
         _processedImage.at<uchar>(j, i) = 255;

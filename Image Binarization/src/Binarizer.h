@@ -6,6 +6,7 @@
 
 class CBinarizer {
 public:
+  explicit CBinarizer(float t = 0.15, int d = 8);
   void ReadImage(std::string path);
   void ProcessImage();
   std::string GetProcessedImagePath();
@@ -14,8 +15,8 @@ private:
   std::string _path;
   cv::Mat _image;
   cv::Mat _processedImage;
-  float t;
-  int d;
+  float _t;
+  int _d;
 };
 
 #endif //IMAGEBINARIZATION_BINARIZER_H
