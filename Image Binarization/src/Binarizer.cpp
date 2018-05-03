@@ -1,9 +1,9 @@
 #include "Binarizer.h"
 
-CBinarizer::CBinarizer(float t, int d) {
-  std::cout << t << " " << d << std::endl;
+CBinarizer::CBinarizer(float t, int d, int type) {
   _t = t;
   _d = d;
+  _type = type;
 }
 
 void CBinarizer::ReadImage(std::string path) {
@@ -13,6 +13,37 @@ void CBinarizer::ReadImage(std::string path) {
 }
 
 void CBinarizer::ProcessImage() {
+  auto integralImage = GetIntegralImage();
+  switch (_type) {
+    case 0:
+      BradleyAlgorithm(integralImage);
+    default:
+      BradleyAlgorithm(integralImage);
+  }
+}
+
+std::string CBinarizer::GetProcessedImagePath() {
+  bool extension = true;
+  std::string path;
+
+  for (auto it = _path.rbegin(); it != _path.rend(); ++it) {
+    if (*it == '.' && extension) {
+      path += ".tluser_";
+      extension = false;
+    } else {
+      path += *it;
+    }
+  }
+
+  return std::string(path.rbegin(), path.rend());
+}
+
+void CBinarizer::SaveProcessedImage() {
+  auto path = GetProcessedImagePath();
+  cv::imwrite(path, _processedImage);
+}
+
+std::vector<std::vector<int>> CBinarizer::GetIntegralImage() {
   auto integralImage = std::vector<std::vector<int>>(_image.rows, std::vector<int>(_image.cols));
   for (auto i = 0; i < _image.cols; ++i) {
     int sum = 0;
@@ -22,11 +53,14 @@ void CBinarizer::ProcessImage() {
       if (i == 0) {
         integralImage[j][i] = sum;
       } else {
-        integralImage[j][i] = integralImage[j][i-1] + sum;
+        integralImage[j][i] = integralImage[j][i - 1] + sum;
       }
     }
   }
+  return integralImage;
+}
 
+void CBinarizer::BradleyAlgorithm(std::vector<std::vector<int>> &integralImage) {
   for (auto i = 0; i < _image.cols; ++i) {
     for (auto j = 0; j < _image.rows; ++j) {
       int frame = std::min(_image.cols, _image.rows) / (2 * _d);
@@ -60,25 +94,4 @@ void CBinarizer::ProcessImage() {
       }
     }
   }
-}
-
-std::string CBinarizer::GetProcessedImagePath() {
-  bool extension = true;
-  std::string path;
-
-  for (auto it = _path.rbegin(); it != _path.rend(); ++it) {
-    if (*it == '.' && extension) {
-      path += ".tluser_";
-      extension = false;
-    } else {
-      path += *it;
-    }
-  }
-
-  return std::string(path.rbegin(), path.rend());
-}
-
-void CBinarizer::SaveProcessedImage() {
-  auto path = GetProcessedImagePath();
-  cv::imwrite(path, _processedImage);
 }
