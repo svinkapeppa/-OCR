@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
+START=$(date +%s)
 for file in ../img/*; do ./ImageBinarization "$file"; done
+END=$(date +%s)
+DIFF=$((END - START))
+echo "scale=10;
+$DIFF / (14 * 8000000) " \
+| bc
