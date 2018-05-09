@@ -4,16 +4,16 @@
 Implement one of the binarization algorithms and test it on the given set of pictures.
 
 ## Solution
-I've chosen to implement ![Bradley's algorithm](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.420.7883).
+I've chosen to implement [Bradley's algorithm](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.420.7883).
 
 ## Prerequisites
 OpenCV - used to perform basic operations with images.
 
 ## Implementation
-There is a special class ![CBinarizer](/src/Binarizer.h), which performs the binarization.
+There is a special class [CBinarizer](/src/Binarizer.h), which performs the binarization.
 
 ## Usage
-There is a special ![script](src/test), which applies algorithm to every image, located in the ![img](img/) folder.
+There is a special [script](src/test), which applies algorithm to every image, located in the [img](img/) folder.
 Results are placed in the same folder with `_result` ending.
 
 If you would like to use custom settings / input, then you need to follow these steps:
